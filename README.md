@@ -1,5 +1,5 @@
 # MAPLE Lab Projects
-Here is an archive of my final data pipelining and visualization code working under the Emotional Piano Project for the lab.
+Here is an archive of my final data pipelining and visualization code working under the Emotional Piano Project for the lab. The project itself is spread throughout GoogleDrive and DropBox so I'm just using this repo to highlight some of my part in the project!
 
 I followed the labs coding standards and wrote comments in a way that incoming students could understand what they were running.
 If you download the Bach data and source the two plot scipts along with Association rules, you can try some of the visualizations yourself in the Practical Use script!
