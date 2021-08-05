@@ -36,6 +36,11 @@ bach <-  subset(dataset, expID == "109")
 dat <- bach
 #Can also use raw data subsets when cycling through multiple.
 
+##########################
+#BEGIN FROM HERE IF YOU WANT TO TEST ANY OF MY CODE ON THE BACH DATA I'VE PROVIDED
+#Just use *dat <- read_csv(filepath of the trial csv)* below
+##########################
+
 # Cue Plots ---------------------------------------------------------------
 #Visualizes each analyzed cue on a per piece basis. 
 #Box plot replaces points with a boxplot **(does not work with mode)**
