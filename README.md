@@ -1,4 +1,4 @@
-# MAPLE Lab Projects
+# MAPLE Lab Project
 Here is an archive of my final data pipelining and visualization code working under the Emotional Piano Project for the lab. The project itself is spread throughout GoogleDrive and DropBox so I'm just using this repo to highlight some of my part in the project!
 
 I followed the labs coding standards and wrote comments in a way that incoming students could understand what they were running.
