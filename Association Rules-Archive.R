@@ -1,6 +1,12 @@
-requireOrInstall(arules, exclude = "summary")
-requireOrInstall(arulesViz)
-requireOrInstall(sjmisc)
+install.packages("tidyverse")
+install.packages("arules")
+install.packages("arulesViz")
+install.packages("sjmisc")
+
+require(tidyverse)
+require(arules, exclude = "summary")
+require(arulesViz)
+require(sjmisc)
 
 #Explaination for category selection in Stacked Categorization Plot.R module
 
@@ -87,5 +93,36 @@ exploreARules <- function(aDat, #Data to analyze
   
   invisible(as.data.frame(inspect(sortedRules))) #Return the data frame but do not read it to console 
 }
+
+#supp, conf, and mL are parameters to refine the association rules, read more in the module itself
+#Sort types allows for easier inspection and identifying ranges of associations to visualize (max 100)
+#Standardized lift can be added (check with Cam for code)
+#DefaultType allows some ignoring of the leftHS and rightHS specifications. Can be "lhs", "rhs","both", or "none".
+
+#leftHS and rightHS idetify what types of items should be on which sides of the association. 
+#Inputs for the left/right hand sides:
+#All ratings c("Sad/Relaxed", "Light/Effervescent","Joyful","Passionate","Tender/Lyrical","lowVal","midVal","highVal" ,"lowAro","midAro","highAro")
+#Just labels c("Sad/Relaxed", "Light/Effervescent","Joyful","Passionate","Tender/Lyrical")
+#Musical cues c("Major","minor","loud","quiet","fast","slow","high","low")
+#All c("Sad/Relaxed", "Light/Effervescent","Joyful","Passionate","Tender/Lyrical","lowVal","midVal","highVal" ,"lowAro","midAro","highAro","Major","minor","loud","quiet","fast","slow","high","low")
+
+bach <- read.csv(url('https://raw.githubusercontent.com/BenKelly-Data/R-Piplining-and-Visualization/main/BachTrial.csv'))
+
+'%notin%'=Negate('%in%')
+
+exploreARules(bach,
+              leftHS=c("Major","minor","loud","quiet","fast","slow","high","low"),
+              rightHS=c("Sad/Relaxed", "Light/Effervescent","Joyful","Passionate",
+                        "Tender/Lyrical","lowVal","midVal","highVal" ,"lowAro",
+                        "midAro","highAro"),
+              supp=0.1, 
+              conf=0.1,
+              mL=2, 
+              sortType= "lift",
+              defaultType="none",
+              ruleNum=24)#Just a place holder, no Default as it should be specific to each analysis
+
+
+
   
 

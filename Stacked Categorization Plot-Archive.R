@@ -4,12 +4,18 @@
 
 #Creates a stacked bar plot, coloured based on the number of matching cues to Horn and Huron, either highlighting
 #summarized data for individual piece or the ratings by each participant
-requireOrInstall(ggrepel)
-requireOrInstall(ggstance)
-requireOrInstall(ggpubr)
-requireOrInstall(sjmisc)
+install.packages("tidyverse")
+install.packages("ggrepel")
+install.packages("ggstance")
+install.packages("ggpubr")
+install.packages("sjmisc")
 
-#require(sjmisc);require(ggpubr); require(yarrr); require(ggrepel); require(ggstance)
+require(tidyverse)
+require(ggrepel)
+require(ggstance)
+require(ggpubr)
+require(sjmisc)
+
 #Can add more parameters for other aspects of the graph.
 #Dat should be the output of dichotomizedDat
 #yLimit should be in c(#,#) format, to be adjusted for each composer or each composer comparison
@@ -195,3 +201,18 @@ stackCatPlot <- function(dat,byPiece=T,ylim,textSize=15, proportion=F,verbose=F,
     if (verbose){return(df)}else{invisible(df)} #Optionally return the data to console or not
   }
 }
+
+#Shows how many pieces were provided each label and how they align with Horn and Huron 2015's labels
+#Order of the labels is currently hard coded as LE,J,TL,P,SR
+#Levels and xLabels can both be modified as arguments.Must match order. Remove missing labels.
+#ylim and textSize can be modified, and proportion does not work with byPiece plots
+
+#Label swapping is the same as for individual cues
+
+'%notin%'=Negate('%in%')
+
+dat <- read.csv(url('https://raw.githubusercontent.com/BenKelly-Data/R-Piplining-and-Visualization/main/BachTrial.csv'), stringsAsFactors = TRUE)
+
+stackCatPlot(dat,byPiece = T,swapSomeLabels = F
+             ,labelSwaps=list(list(10,"Light/Effervescent"),list(12,"Joyful"))) #Example for Bach ExpID 109
+stackCatPlot(dat,byPiece=F,proportion = F) #No label swapping needed

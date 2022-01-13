@@ -4,10 +4,19 @@
 #Provides violin plots for extracted cues (AR,PH,RMS) and a barplot for Mode
 
 #Double checking that these packages are loaded, loads if not. 
-requireOrInstall(ggrepel)
-requireOrInstall(ggstance)
-requireOrInstall(ggpubr)
-requireOrInstall(sjmisc)
+install.packages("tidyverse")
+install.packages("ggrepel")
+install.packages("ggstance")
+install.packages("ggpubr")
+install.packages("sjmisc")
+install.packages("nnet")
+
+require(tidyverse)
+require(ggrepel)
+require(ggstance)
+require(ggpubr)
+require(sjmisc)
+require(nnet)
 
 #cue is which of the musical cues you want to visualize ("AR","RMS","PH","Mode")
 #yLimit is for specifc y-axis limits c(#,#) 
@@ -27,7 +36,7 @@ cuePlot <- function(dat,cue,boxplot=F,ylim,textSize=15, verbose=F,
     print("Labels absent or invalid...NO PLOT FOR YOU")
   }else{
     composer <- as.character(unique(dat$composer))#Assign composer for title
-    composer <- str_to_title(composer) #Capitalize for the titles
+    composer <- stringr::str_to_title(composer) #Capitalize for the titles
     
     dat$rms <- scale(dat$rms) #Normalizes RMS within composers to better compare between, as the actual values have no meaning across performances
     
@@ -131,3 +140,48 @@ cuePlot <- function(dat,cue,boxplot=F,ylim,textSize=15, verbose=F,
     }
     if (verbose){return(dat)}else{invisible(dat)} #Optionally return the data to console or not
   }}
+
+####DESCRIBED IN mergeFunctions
+'%notin%'=Negate('%in%')
+
+popularLabel <- function(labels)
+{
+  if(all(is.na(labels)))
+  {# if nothing but NAs
+    retLabel=NA# value should be NA (which.max defaults to 1st category in this situation)
+  } else 
+  {
+    labelList<- levels(labels) #Find all levels of the labels
+    modeLabel <- labelList[which.is.max(table(labels))]#Create the variable that has A max label (not THE in the case of ties)
+    if(sum(table(labels)==max(table(labels)))>1) #If the number of tables matching the largest value from the table is more than one, print warning.
+    {
+      message(paste("Warning 1/2: At least two labels have tied for the most common label for piece at index:",cur_group_id()))
+      message("Warning 2/2: View the output dataframe to match the indices to the pieces with the tied labels.")
+    }
+    return(modeLabel)
+  }
+}
+####
+
+dat <- read.csv(url('https://raw.githubusercontent.com/BenKelly-Data/R-Piplining-and-Visualization/main/BachTrial.csv'), stringsAsFactors = TRUE)
+  
+#Visualizes each analyzed cue on a per piece basis. 
+#Box plot replaces points with a boxplot **(does not work with mode)**
+#Default is False
+#y range and text size can be modified with ylim= and textSize=
+  
+#col assigns a colour to each label (rarely should be used)
+  
+#Levels orders them along the x axis
+#xLab formats the labels **(MUST MATCH ORDER OF LEVELS)**
+#If one or more labels is never the most common, remove that label from the levels and xLab.
+#Verbose prints out the data to the console or not if not saved to GE
+
+#Run first with swapSomeLabels as False, if there is no warning you're all set!
+#If there is a warning, view the output data 
+
+cuePlot(dat, cue="arPerf", boxplot=F,verbose=F,swapSomeLabels = F
+        ,labelSwaps=list(list(12,"Light/Effervescent"),list(16,"Joyful"))) #Label swaps provided as an example of how to format (Bach  ExpID 109)
+cuePlot(dat, "pitchHeight")
+cuePlot(dat, "rms")
+cuePlot(dat, "mode")
